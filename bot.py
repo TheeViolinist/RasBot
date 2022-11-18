@@ -7,11 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 # Inicialização do client e intents #
 intents = discord.Intents.default()
-<<<<<<< HEAD
-intents.message_content = True
-client = discord.Client(intents=intents)
-client = commands.Bot(command_prefix='!', intents=intents)
-=======
 client = commands.Bot(command_prefix='!', intents=intents)
 intents.message_content = True 
 
@@ -32,15 +27,33 @@ class Bot:
         # O context representa todo o conteúdo de onde o commando foi dado, servidor, autor, context.send envia uma mensagem para onde o comando foi invocado
         @client.command()
         async def hello(ctx):
-            #ctx.author retorna a classe author cujo atributo eh nick
-            message = f'Hello {ctx.author.nick} {ctx.author.display_avatar}!'
+            message = f'Hello {ctx.author.nick}!'
             await ctx.send(message)
 
-    
+    def command_math(self):
+        @client.command()
+        async def math(ctx, number1:float , operation, number2:float):
+            if(operation == '+'):
+                await ctx.send(f'{number1} + {number2} = {number1 + number2}')
+            elif(operation == '-'):
+                await ctx.send(f'{number1} - {number2} = {number1 - number2}')
+            elif(operation == '*'):
+                await ctx.send(f'{number1} x {number2} = {number1 * number2}')
+            elif(operation == '/'):
+                await ctx.send(f'{number1} / {number2} = {number1 / number2}')
+            
+    def command_dice(self):
+        @client.command()
+        async def roll(ctx, max:int):
+            number = random.randint(1, max)
+            await ctx.send(number)
+
     
 def main():
     bot = Bot()
 
+    bot.command_dice()
+    bot.command_math()
     bot.command_hello()
     bot.command_run()
 
@@ -50,13 +63,7 @@ if __name__ == "__main__":
 
 
 
->>>>>>> 02c0428000ba2d1b52b1f2f4ee77b93cfc1e33b0
 
-
-@client.command()
-async def rolll(ctx, max):
-    number = random.randint(1,max)
-    await ctx.send(number)
 
 
 
