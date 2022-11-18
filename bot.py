@@ -6,12 +6,19 @@ from dotenv import load_dotenv
 load_dotenv()
 # Inicialização do client e intents #
 intents = discord.Intents.default()
-client = commands.Bot(command_prefix='!', intents=intents)
+client = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True)
 intents.message_content = True 
 
+# Classe que indica o membro
+class Pessoa:
+    def __init__(self, nome):
+        self.nome_member = nome
+        self.gemidos = 0
+   
 class Bot:
     # Construtor do bot inicializa as configurações
-    def _init_(self):            
+    def __init__(self):
+        self.membros = list()          
         @client.event
         async def on_ready():
             print('We have logged in as{0.user}'.format(client))
@@ -27,17 +34,37 @@ class Bot:
         @client.command()
         async def hello(ctx):
             #ctx.author retorna a classe author cujo atributo eh nick
-            message = f'Hello {ctx.author.nick} {ctx.author.display_avatar}!'
+            if(ctx.author.nick == None ):
+                message = f'Hello {ctx.author.name}'
+            else:
+                message = f'Hello {ctx.author.nick}'
+            
             await ctx.send(message)
-
     
+    def command_gemido(self):
+        @client.command()
+        async def ainn(ctx):
+            membro = Pessoa(ctx.author.name)
+            if membro.nome_member not in self.membros:
+                self.membros.append(membro.nome_member)
+            else:
+                membro.gemidos += 1
+            
+            message = f'{ctx.author.name} gemeu {membro.gemidos} vezes!'
+            await ctx.send(message)
+                
+            
+
+
+
     
 def main():
     bot = Bot()
 
     bot.command_hello()
+    bot.command_gemido()
     bot.command_run()
-
+    
 
 if __name__ == "__main__":
     main()
