@@ -74,11 +74,18 @@ class Bot:
             number = random.randint(1, max)
             await ctx.send(number)
 
+    def command_ping(self):
+        @client.command()
+        async def ping(ctx):
+            await ctx.send(f'ping {round(client.latency * 1000)}ms')
+
+
 
     
 def main():
     bot = Bot()
 
+    bot.command_ping()
     bot.command_dice()
     bot.command_math()
     bot.command_hello()
