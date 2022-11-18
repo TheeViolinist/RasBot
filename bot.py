@@ -1,3 +1,4 @@
+import random
 import discord
 import os
 from discord.ext import commands # Importa a classe comands do pacote discord.ext
@@ -33,6 +34,7 @@ class Bot:
         # O context representa todo o conteúdo de onde o commando foi dado, servidor, autor, context.send envia uma mensagem para onde o comando foi invocado
         @client.command()
         async def hello(ctx):
+
             #ctx.author retorna a classe author cujo atributo eh nick
             if(ctx.author.nick == None ):
                 message = f'Hello {ctx.author.name}'
@@ -53,14 +55,32 @@ class Bot:
             message = f'{ctx.author.name} gemeu {membro.gemidos} vezes!'
             await ctx.send(message)
                 
-            
 
+    def command_math(self):
+        @client.command()
+        async def math(ctx, number1:float , operation, number2:float):
+            if(operation == '+'):
+                await ctx.send(f'{number1} + {number2} = {number1 + number2}')
+            elif(operation == '-'):
+                await ctx.send(f'{number1} - {number2} = {number1 - number2}')
+            elif(operation == '*'):
+                await ctx.send(f'{number1} x {number2} = {number1 * number2}')
+            elif(operation == '/'):
+                await ctx.send(f'{number1} / {number2} = {number1 / number2}')
+            
+    def command_dice(self):
+        @client.command()
+        async def roll(ctx, max:int):
+            number = random.randint(1, max)
+            await ctx.send(number)
 
 
     
 def main():
     bot = Bot()
 
+    bot.command_dice()
+    bot.command_math()
     bot.command_hello()
     bot.command_gemido()
     bot.command_run()
