@@ -32,7 +32,8 @@ class Bot:
         # O context representa todo o conteúdo de onde o commando foi dado, servidor, autor, context.send envia uma mensagem para onde o comando foi invocado
         @client.command()
         async def hello(ctx):
-            message = f'Hello {ctx.author.nick}!'
+            #ctx.author retorna a classe author cujo atributo eh nick
+            message = f'Hello {ctx.author.nick} {ctx.author.display_avatar}!'
             await ctx.send(message)
 
     
