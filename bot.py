@@ -51,7 +51,7 @@ class Music:
     def command_play(self):
         @client.command()
         async def play(ctx, url):
-            
+            await self.command_join()
             voice_channel = ctx.author.voice.channel
             if ctx.voice_client is None:
                 await voice_channel.connect()
