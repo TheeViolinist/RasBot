@@ -4,7 +4,7 @@ import os
 from discord.ext import commands # Importa a classe comands do pacote discord.ext
 from dotenv import load_dotenv
 import youtube_dl
-
+from keep_alive import keep_alive
 
 
 
@@ -31,7 +31,7 @@ def search_member(name, list_members):
 class Music:
     def command_join(self):
         @client.command()
-        async def join(ctx):
+        async def joinn(ctx):
             if ctx.author.voice is None:
                 await ctx.send("Entre em um canal de voz.")
             
@@ -51,7 +51,6 @@ class Music:
     def command_play(self):
         @client.command()
         async def play(ctx, url):
-            await self.command_join()
             voice_channel = ctx.author.voice.channel
             if ctx.voice_client is None:
                 await voice_channel.connect()
@@ -155,6 +154,21 @@ class Bot:
         async def ping(ctx):
             await ctx.send(f'ping {round(client.latency * 1000)}ms')
 
+    def command_poll(self):
+        @client.command()
+        async def poll(ctx, *args):
+          mesg = ' '.join(args)
+          await ctx.message.delete()
+          embed=discord.Embed(title=":ballot_box: Enquete", description="opções", color=0x1abc1f)
+          embed.add_field(name="Question", value=mesg, inline=True)
+          embed.set_footer(text="Made by tavinho")
+          message = await ctx.send(embed=embed)
+      
+          await message.add_reaction("✅")
+          await message.add_reaction("❌")
+
+        
+
     def command_music(self):
         self.music.command_join()
         self.music.command_disconnect()
@@ -167,7 +181,8 @@ class Bot:
     
 def main():
     bot = Bot()
-    
+
+    bot.command_poll()
     bot.command_ping()
     bot.command_dice()
     bot.command_math()
@@ -175,7 +190,7 @@ def main():
     bot.command_gemido()
     bot.command_music()
     
-
+    keep_alive() #Roda o web server
     bot.command_run()
     
 
